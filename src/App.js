@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      <Navbar />
+        <Navbar />
         <Routes>
           <Route path="create" element={<CreateNotes />} />
           <Route path="/all-notes" element={<AllNotes />} />
