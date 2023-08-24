@@ -24,6 +24,22 @@ export const createNote = createAsyncThunk(
   }
 );
 
+//read action
+export const showNote = createAsyncThunk(
+  "showNote",
+  async (args, { rejectWithValue }) => {
+    const response = await fetch(
+      "https://64dd0092e64a8525a0f77c5d.mockapi.io/todo"
+    );
+    try {
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const userNote = createSlice({
   name: "userNote",
   initialState: {
@@ -43,6 +59,19 @@ export const userNote = createSlice({
       state.loading = false;
       state.error = action.payload.message;
     },
+
+    //read 
+    [showNote.pending]: (state) => {
+      state.loading = true;
+    },
+    [showNote.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.notes = action.payload
+    },
+    [showNote.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload
+    }
   },
 });
 
