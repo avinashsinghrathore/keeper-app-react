@@ -40,6 +40,25 @@ export const showNote = createAsyncThunk(
   }
 );
 
+// delete action
+export const deleteNote = createAsyncThunk(
+  "deleteNote",
+  async (id, { rejectWithValue }) => {
+    const response = await fetch(
+      `https://64dd0092e64a8525a0f77c5d.mockapi.io/todo/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    try {
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const userNote = createSlice({
   name: "userNote",
   initialState: {
@@ -60,18 +79,34 @@ export const userNote = createSlice({
       state.error = action.payload.message;
     },
 
-    //read 
+    //read
     [showNote.pending]: (state) => {
       state.loading = true;
     },
     [showNote.fulfilled]: (state, action) => {
       state.loading = false;
-      state.notes = action.payload
+      state.notes = action.payload;
     },
     [showNote.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload
-    }
+      state.error = action.payload;
+    },
+
+    //delete
+    [deleteNote.pending]: (state) => {
+      state.loading = true;
+    },
+    [deleteNote.fulfilled]: (state, action) => {
+      state.loading = false;
+      const { id } = action.payload;
+      if (id) {
+        state.notes = state.notes.filter((ele) => ele.id !== id);
+      }
+    },
+    [deleteNote.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 

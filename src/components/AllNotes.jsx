@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { showNote } from "../features/userNoteSlice";
+import { deleteNote, showNote } from "../features/userNoteSlice";
 
 const AllNotes = () => {
   const dispatch = useDispatch();
-  
 
   const { notes, loading } = useSelector((state) => state.app);
 
@@ -18,25 +17,37 @@ const AllNotes = () => {
   }
 
   return (
-    <div style={{ margin: "auto", padding: "10px" }}>
-      <h4 style={{ textAlign: "center" }}>All notes</h4>
+    <>
+      <h4 style={{ textAlign: "center", padding: "10px" }}>All notes</h4>
       {notes &&
         notes.map((ele) => (
-          <div className="card" style={{ width: "20rem" }}>
-            <div className="card-body text-bg-warning">
+          <div
+            key={ele.id}
+            className="card text-bg-warning mb-3"
+            style={{
+              maxWidth: "18rem",
+              margin: "10px",
+              display: "inline-flex",
+            }}
+          >
+            <div className="card-header">{ele.title}</div>
+            <div className="card-body">
               <h5 className="card-title">{ele.title}</h5>
-              <h6 className="card-subtitle mb-2 text-body-secondary">
-                Card subtitle
-              </h6>
-              <p className="card-text">
-                {ele.yournote}
-              </p>
-              <Link className="card-link">Edit</Link>
-              <Link className="card-link">Delete</Link>
+              <p className="card-text">{ele.yournote}</p>
+              <Link classNameName="card-link" style={{margin: "4px",}}>View</Link>
+              <Link classNameName="card-link" style={{margin: "4px"}}>Edit</Link>
+
+              <Link
+                classNameName="card-link"
+                style={{margin: "4px"}}
+                onClick={() => dispatch(deleteNote(ele.id))}
+              >
+                Delete
+              </Link>
             </div>
           </div>
         ))}
-    </div>
+    </>
   );
 };
 

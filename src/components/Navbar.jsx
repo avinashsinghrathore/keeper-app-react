@@ -1,7 +1,12 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
+
+  const allNotes = useSelector((state) => state.app.notes)
+
+
   return (
     <div>
       <nav
@@ -30,7 +35,7 @@ const Navbar = () => {
                   aria-current="page"
                   href="#"
                 >
-                  All notes
+                  All notes ({allNotes.length})
                 </Link>
               </li>
 
